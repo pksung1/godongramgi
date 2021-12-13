@@ -1,0 +1,23 @@
+{
+  "name": "godongramgi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "^3.8.1",
+    "@slack/events-api": "^3.0.1"
+  },
+  "scripts": {
+    "dev-server": "nodemon ./app.ts localhost 3003",
+    "ngrok-server": "./ngrok http 3003",
+    "ngrok-verify": "./node_modules/.bin/slack-verify --secret $SIGNING_SECRET --path=/slack/events --port=$PORT"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^16.11.12",
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.3"
+  }
+}
