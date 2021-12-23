@@ -1,12 +1,15 @@
 import {App} from '@slack/bolt'
 import dotenv from 'dotenv'
+import ngrok from 'ngrok'
 
 dotenv.config()
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  appToken: process.env.APP_TOKEN,
+  socketMode: true,
 });
 
 
@@ -28,93 +31,30 @@ app.message('독설', async ({ event, message, say }) => {
   }]});
 });
 
-app.event('app_mention', async ({ event, context, client, say }) => {
-  console.log('hello Word')
-  try {
-    await say({"blocks": [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": `Thanks for the mention <@${event.user}>! Here's a button`
-        },
-        "accessory": {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "text": "Button",
-            "emoji": true
-          },
-          "value": "click_me_123",
-          "action_id": "first_button"
-        }
-      }
-    ]});
-  }
-  catch (error) {
-    console.error(error);
-  }
+app.message('마법의고동램지', async ({event, message, say}) => {
+  const result = Math.random() > 0.5 ? '네' : '아니'
+  await say(result)
+})
+
+app.message('로또번호 알려줘요', async ({message}) => {
+  
+  console.log(message)
 });
-
-// All the room in the world for your code
-app.event('app_home_opened', async ({ event, client, context }) => {
-  try {
-    /* view.publish is the method that your app uses to push a view to the Home tab */
-    const result = await client.views.publish({
-
-      /* the user that opened your app's app home */
-      user_id: event.user,
-
-      /* the view object that appears in the app home*/
-      view: {
-        type: 'home',
-        callback_id: 'home_view',
-
-        /* body of the view */
-        blocks: [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "*안녕하세요. 고동램지 입니다.* :tada:"
-            }
-          },
-          {
-            "type": "divider"
-          },
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "This button won't do much for now but you can set up a listener for it using the `actions()` method and passing its unique `action_id`. See an example in the `examples` folder within your Bolt app."
-            }
-          },
-          {
-            "type": "actions",
-            "elements": [
-              {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "text": "Click me!"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    });
-  }
-  catch (error) {
-    console.error(error);
-  }
-});
-
-
 
 (async () => {
+  // let url= ngrok.getUrl();
+  // if (!url) {
+  //   url = await ngrok.connect(3003)
+  // }
+  
   // Start your app
   await app.start(3003);
-
   console.log('⚡️ Bolt app is running!');
+  // console.log(`CONNECT NGROK URL : ${url}`);
+  
 })();
+
+// process.on('exit', () => {
+//   ngrok.disconnect();
+//   ngrok.kill();
+// })

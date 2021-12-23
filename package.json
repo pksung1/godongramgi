@@ -5,11 +5,12 @@
   "license": "MIT",
   "dependencies": {
     "@slack/bolt": "^3.8.1",
-    "@slack/events-api": "^3.0.1"
+    "@slack/events-api": "^3.0.1",
+    "ngrok": "^4.2.2"
   },
   "scripts": {
     "dev-server": "nodemon ./app.ts localhost 3003",
-    "ngrok-server": "./ngrok http 3003",
+    "ngrok-server": "ngrok http 3003",
     "ngrok-verify": "./node_modules/.bin/slack-verify --secret $SIGNING_SECRET --path=/slack/events --port=$PORT"
   },
   "devDependencies": {
